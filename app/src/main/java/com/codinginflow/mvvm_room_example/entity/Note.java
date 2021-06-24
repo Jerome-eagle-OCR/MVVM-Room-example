@@ -9,11 +9,11 @@ public class Note {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String title;
+    private final String title;
 
-    private String description;
+    private final String description;
 
-    private int priority;
+    private final int priority;
 
     public Note(String title, String description, int priority) {
         this.title = title;

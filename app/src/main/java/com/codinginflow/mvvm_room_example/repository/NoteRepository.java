@@ -12,7 +12,8 @@ import com.codinginflow.mvvm_room_example.entity.Note;
 import java.util.List;
 
 public class NoteRepository {
-    private NoteDao noteDao;
+
+    private final NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
 
     public NoteRepository(Application application) {

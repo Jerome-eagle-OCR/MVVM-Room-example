@@ -10,24 +10,24 @@ import org.jetbrains.annotations.NotNull;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
-    private ViewModelFactory factory;
-
-    public ViewModelFactory getInstance() {
-        if (factory == null) {
-            synchronized (ViewModelFactory.class) {
-                factory = new ViewModelFactory(new NoteRepository(App.getInstance()));
-            }
-        }
-        return factory;
-    }
+    private static ViewModelFactory sFactory;
 
     @NonNull
-    private final NoteRepository noteRepository;
+    private final NoteRepository mNoteRepository;
 
-    public ViewModelFactory(
-            @NotNull NoteRepository noteRepository
-    ) {
-        this.noteRepository = noteRepository;
+    private ViewModelFactory(@NotNull NoteRepository noteRepository) {
+        mNoteRepository = noteRepository;
+    }
+
+    public static ViewModelFactory getInstance() {
+        if (sFactory == null) {
+            synchronized (ViewModelFactory.class) {
+                if (sFactory == null) {
+                    sFactory = new ViewModelFactory(new NoteRepository());
+                }
+            }
+        }
+        return sFactory;
     }
 
     @SuppressWarnings("unchecked")
@@ -36,7 +36,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull @NotNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MainViewModel.class)) {
-            return (T) new MainViewModel(noteRepository);
+            return (T) new MainViewModel(mNoteRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

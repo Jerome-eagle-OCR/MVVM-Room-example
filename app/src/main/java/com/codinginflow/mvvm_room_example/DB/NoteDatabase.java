@@ -1,36 +1,46 @@
 package com.codinginflow.mvvm_room_example.DB;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.codinginflow.mvvm_room_example.DAO.NoteDao;
+import com.codinginflow.mvvm_room_example.MainApplication;
 import com.codinginflow.mvvm_room_example.entity.Note;
 
 import org.jetbrains.annotations.NotNull;
 
-@Database(entities = {Note.class}, version = 1)
+@Database(entities = {Note.class}, exportSchema = false, version = 1)
 public abstract class NoteDatabase extends RoomDatabase {
-
-    private static NoteDatabase instance;
 
     public abstract NoteDao noteDao();
 
-    public static synchronized NoteDatabase getInstance(Context context) {
+    private static NoteDatabase instance;
+    private static final String DB_NAME = "note_database";
+
+    public static NoteDatabase getInstance() {
         if (instance == null) {
-            instance = Room.databaseBuilder(context.getApplicationContext(), NoteDatabase.class, "note_database")
-                    .fallbackToDestructiveMigration()
-                    .addCallback(roomCallback)
-                    .build();
+            synchronized (NoteDatabase.class) {
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                            MainApplication.getInstance(),
+                            NoteDatabase.class,
+                            DB_NAME)
+                            .fallbackToDestructiveMigration()
+                            .addCallback(roomCallback
+                    ).build();
+                }
+            }
         }
+
         return instance;
     }
 
-    private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
+    private static final RoomDatabase.Callback roomCallback = new Callback() {
         @Override
         public void onCreate(@NonNull @NotNull SupportSQLiteDatabase db) {
             super.onCreate(db);
@@ -38,7 +48,9 @@ public abstract class NoteDatabase extends RoomDatabase {
         }
     };
 
+
     public static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
+
         private final NoteDao noteDao;
 
         private PopulateDbAsyncTask(NoteDatabase db) {

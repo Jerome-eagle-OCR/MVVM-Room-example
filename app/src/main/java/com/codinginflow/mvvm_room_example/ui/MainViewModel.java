@@ -1,7 +1,5 @@
 package com.codinginflow.mvvm_room_example.ui;
 
-import android.app.Application;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 

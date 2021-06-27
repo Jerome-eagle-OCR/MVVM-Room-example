@@ -1,6 +1,7 @@
 package com.codinginflow.mvvm_room_example.ui;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import java.util.List;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
 
     private List<Note> mNotes = new ArrayList<>();
+    private OnItemClickListener mListener;
 
     @NonNull
     @NotNull
@@ -46,9 +48,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         notifyDataSetChanged();
     }
 
-    public Note getNoteAtPostion(int position) {
+    public Note getNoteAtPosition(int position) {
         return mNotes.get(position);
     }
+
 
     class NoteHolder extends RecyclerView.ViewHolder {
 
@@ -62,6 +65,23 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
             mTextViewTitle = noteFragmentBinding.textViewTitle;
             mTextViewPriority = noteFragmentBinding.textViewPriority;
             mTextViewDescription = noteFragmentBinding.textViewDescription;
+
+            View itemView = noteFragmentBinding.getRoot().getRootView();
+
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (mListener != null && position != RecyclerView.NO_POSITION) {
+                    mListener.onClick(mNotes.get(position));
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onClick(Note note);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 }

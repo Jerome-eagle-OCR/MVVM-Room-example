@@ -1,4 +1,4 @@
-package com.codinginflow.mvvm_room_example.DB;
+package com.codinginflow.mvvm_room_example.db;
 
 import android.os.AsyncTask;
 
@@ -8,7 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.codinginflow.mvvm_room_example.DAO.NoteDao;
+import com.codinginflow.mvvm_room_example.dao.NoteDao;
 import com.codinginflow.mvvm_room_example.MainApplication;
 import com.codinginflow.mvvm_room_example.entity.Note;
 

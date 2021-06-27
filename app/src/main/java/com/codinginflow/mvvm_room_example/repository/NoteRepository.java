@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.codinginflow.mvvm_room_example.DAO.NoteDao;
-import com.codinginflow.mvvm_room_example.DB.NoteDatabase;
+import com.codinginflow.mvvm_room_example.dao.NoteDao;
+import com.codinginflow.mvvm_room_example.db.NoteDatabase;
 import com.codinginflow.mvvm_room_example.entity.Note;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class NoteRepository {
 
     private final NoteDao noteDao;
-    private LiveData<List<Note>> allNotes;
+    private final LiveData<List<Note>> allNotes;
 
     public NoteRepository() {
         NoteDatabase database = NoteDatabase.getInstance();

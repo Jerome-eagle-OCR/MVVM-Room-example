@@ -1,4 +1,4 @@
-package com.codinginflow.mvvm_room_example.DAO;
+package com.codinginflow.mvvm_room_example.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
